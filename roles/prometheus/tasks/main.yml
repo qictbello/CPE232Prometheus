@@ -1,0 +1,25 @@
+---
+  - name: Installation Prometheus Ubuntu
+    tags: ubuntu, prometheus
+    apt:
+      name: prometheus
+      state: latest
+    when: ansible_distribution == "Ubuntu"
+
+  - name: Pre-req install CentOS
+    tags: centos,snapd
+    yum:
+      name:
+        - snapd
+      state: latest
+    when: ansible_distribution == "CentOS"
+
+  - name: Enabling snapd CentOS
+    tags: snapd,centos
+    command: systemctl enable --now snapd.socket
+    when: ansible_distribution == "CentOS"
+
+  - name: Installation Prometheus CentOS
+    tags: prometheus,centos
+    command: snap install prometheus --classic
+    when: ansible_distribution == "CentOS"
